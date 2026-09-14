@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAVA+ — Soluções em Engenharia</title>
+<meta name="description" content="CAVA+ Soluções em Engenharia. Sua obra. Nosso problema. Você explica o que precisa, a gente encontra o caminho.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E0E10;
+    --graphite:#19191B;
+    --graphite-2:#232326;
+    --paper:#EDEAE3;
+    --paper-2:#E2DED4;
+    --text-dark:#16150F;
+    --text-dim:rgba(22,21,15,0.60);
+    --text-light:#F4F2EC;
+    --text-light-dim:rgba(244,242,236,0.58);
+    --gold:#C6A15B;
+    --gold-bright:#E7C97C;
+    --gold-deep:#8C7139;
+    --line-dark:rgba(244,242,236,0.14);
+    --line-light:rgba(22,21,15,0.14);
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --display: 'Archivo', sans-serif;
+    --wrap: 1120px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sans);
+    background:var(--paper);
+    color:var(--text-dark);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+    html{scroll-behavior:auto;}
+  }
+
+  :focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:var(--wrap);
+    margin:0 auto;
+    padding:0 24px;
+  }
+  @media (min-width:900px){
+    .wrap{padding:0 48px;}
+  }
+
+  section{position:relative;}
+  .on-dark{background:var(--ink); color:var(--text-light);}
+  .on-graphite{background:var(--graphite); color:var(--text-light);}
+  .on-paper{background:var(--paper); color:var(--text-dark);}
+  .on-paper-2{background:var(--paper-2); color:var(--text-dark);}
+
+  /* --- registration marks / blueprint grid motif --- */
+  .reg-mark{
+    position:absolute;
+    width:22px; height:22px;
+    pointer-events:none;
+    opacity:0.55;
+  }
+  .reg-mark::before,.reg-mark::after{
+    content:"";
+    position:absolute;
+    background:currentColor;
+  }
+  .reg-mark::before{ width:100%; height:1px; top:50%; left:0; }
+  .reg-mark::after{ width:1px; height:100%; top:0; left:50%; }
+  .reg-mark.tl{ top:20px; left:20px; }
+  .reg-mark.tr{ top:20px; right:20px; }
+  .reg-mark.bl{ bottom:20px; left:20px; }
+  .reg-mark.br{ bottom:20px; right:20px; }
+  @media (max-width:640px){
+    .reg-mark{ display:none; }
+  }
+
+  .grid-bg{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(to right, var(--line-dark) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line-dark) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity:0.5;
+    pointer-events:none;
+  }
+  .on-paper .grid-bg, .on-paper-2 .grid-bg{
+    background-image:
+      linear-gradient(to right, var(--line-light) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line-light) 1px, transparent 1px);
+  }
+
+  .tag{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.02em;
+    color:var(--gold);
+  }
+
+  /* --- Buttons --- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:16px;
+    padding:16px 28px;
+    border-radius:2px;
+    transition:transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+    border:1px solid transparent;
+  }
+  .btn:active{ transform:scale(0.98); }
+  .btn-gold{
+    background:var(--gold);
+    color:#171208;
+  }
+  .btn-gold:hover{
+    background:var(--gold-bright);
+    box-shadow:0 8px 24px rgba(198,161,91,0.25);
+  }
+  .btn-outline{
+    border-color:var(--line-dark);
+    color:var(--text-light);
+  }
+  .on-paper .btn-outline, .on-paper-2 .btn-outline{
+    border-color:var(--line-light);
+    color:var(--text-dark);
+  }
+  .btn-outline:hover{
+    border-color:var(--gold);
+    color:var(--gold-deep);
+  }
+  .on-dark .btn-outline:hover, .on-graphite .btn-outline:hover{
+    color:var(--gold-bright);
+  }
+  .btn svg{ width:16px; height:16px; flex-shrink:0; }
+
+  /* --- Header --- */
+  .site-header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(14,14,16,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-dark);
+  }
+  .site-header .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:72px;
+  }
+  .brand{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:20px;
+    color:var(--text-light);
+    letter-spacing:-0.01em;
+  }
+  .brand span{ color:var(--gold); }
+  .header-cta{
+    font-family:var(--sans);
+    font-size:14px;
+    font-weight:600;
+    color:var(--text-light);
+    border:1px solid var(--line-dark);
+    padding:10px 18px;
+    border-radius:2px;
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+  .header-cta:hover{
+    border-color:var(--gold);
+    color:var(--gold-bright);
+  }
+
+  /* --- Hero --- */
+  .hero{
+    padding:150px 0 90px;
+    min-height:92vh;
+    display:flex;
+    align-items:center;
+  }
+  .hero .wrap{ position:relative; z-index:1; }
+  .hero-eyebrow{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:28px;
+  }
+  .hero-eyebrow .dash{
+    width:36px; height:1px; background:var(--gold);
+  }
+  .hero h1{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:clamp(42px, 9vw, 96px);
+    line-height:0.98;
+    letter-spacing:-0.02em;
+    max-width:14ch;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--gold);
+  }
+  .hero-support{
+    margin-top:28px;
+    font-size:19px;
+    color:var(--text-light-dim);
+    max-width:38ch;
+    line-height:1.6;
+  }
+  .hero-actions{
+    margin-top:44px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    align-items:center;
+  }
+  .hero-note{
+    margin-top:56px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-light-dim);
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+
+  /* --- Section headings --- */
+  .section-head{
+    max-width:640px;
+    margin-bottom:56px;
+  }
+  .section-head .tag{ display:block; margin-bottom:18px; }
+  .section-head h2{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(30px, 4.4vw, 46px);
+    line-height:1.08;
+    letter-spacing:-0.015em;
+  }
+  .section-pad{ padding:96px 0; }
+  @media (min-width:900px){ .section-pad{ padding:130px 0; } }
+
+  /* --- Momento section --- */
+  .moments{
+    border-top:1px solid var(--line-light);
+  }
+  .moment-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    padding:26px 0;
+    border-bottom:1px solid var(--line-light);
+    transition:padding-left 0.25s ease, background 0.25s ease;
+  }
+  .moment-row:hover{
+    padding-left:14px;
+    background:rgba(198,161,91,0.06);
+  }
+  .moment-left{
+    display:flex;
+    align-items:baseline;
+    gap:20px;
+  }
+  .moment-code{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--gold-deep);
+    flex-shrink:0;
+  }
+  .moment-title{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(19px, 2.6vw, 26px);
+  }
+  .moment-arrow{
+    font-size:22px;
+    color:var(--gold-deep);
+    flex-shrink:0;
+    transition:transform 0.25s ease;
+  }
+  .moment-row:hover .moment-arrow{ transform:translateX(6px); color:var(--gold); }
+
+  /* --- Soluções section --- */
+  .solutions-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:0;
+  }
+  @media (min-width:800px){
+    .solutions-grid{
+      grid-template-columns:repeat(4, 1fr);
+    }
+    .solutions-grid > div{
+      border-left:1px solid var(--line-dark);
+      padding-left:28px;
+    }
+  }
+  .solutions-grid > div{
+    padding:28px 0;
+    border-top:1px solid var(--line-dark);
+  }
+  @media (min-width:800px){
+    .solutions-grid > div{ border-top:none; padding-top:0; }
+  }
+  .sol-group-title{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--gold);
+    margin-bottom:20px;
+  }
+  .sol-group li{
+    padding:9px 0;
+    font-size:15px;
+    color:var(--text-light-dim);
+    border-bottom:1px solid var(--line-dark);
+  }
+  .sol-group li:last-child{ border-bottom:none; }
+
+  /* --- Sem engenheirês --- */
+  .translate-block{
+    display:grid;
+    gap:16px;
+    margin-top:48px;
+  }
+  .translate-row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    padding:22px 0;
+    border-top:1px solid var(--line-light);
+  }
+  @media (min-width:760px){
+    .translate-row{
+      grid-template-columns:1fr 40px 1.2fr;
+      align-items:center;
+      gap:20px;
+    }
+  }
+  .translate-tech{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--text-dim);
+  }
+  .translate-arrow{
+    color:var(--gold-deep);
+    font-size:18px;
+    text-align:center;
+  }
+  .translate-plain{
+    font-size:17px;
+    font-weight:500;
+  }
+  .engineer-lead{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(26px, 4vw, 40px);
+    line-height:1.2;
+    max-width:16ch;
+  }
+
+  /* --- Por que a CAVA+ (pillars) --- */
+  .pillars{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:0;
+  }
+  @media (min-width:800px){
+    .pillars{ grid-template-columns:repeat(4,1fr); }
+  }
+  .pillar{
+    padding:32px 0;
+    border-top:1px solid var(--line-light);
+  }
+  @media (min-width:800px){
+    .pillar{
+      border-top:none;
+      border-left:1px solid var(--line-light);
+      padding:0 28px;
+    }
+    .pillar:first-child{ border-left:none; padding-left:0; }
+  }
+  .pillar-name{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:19px;
+    margin-bottom:14px;
+    letter-spacing:-0.01em;
+  }
+  .pillar-text{
+    font-size:15px;
+    color:var(--text-dim);
+    line-height:1.6;
+  }
+
+  /* --- Por trás da CAVA+ --- */
+  .founder{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:48px;
+    align-items:start;
+  }
+  @media (min-width:840px){
+    .founder{ grid-template-columns:280px 1fr; }
+  }
+  .founder-mark{
+    width:100%;
+    aspect-ratio:1/1;
+    max-width:260px;
+    position:relative;
+    background:var(--ink);
+    overflow:hidden;
+  }
+  .founder-mark svg{ width:100%; height:100%; }
+  .founder-name{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:22px;
+    margin-bottom:6px;
+  }
+  .founder-role{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--gold-deep);
+    margin-bottom:22px;
+  }
+  .founder-text p{
+    font-size:16px;
+    line-height:1.75;
+    color:var(--text-dim);
+    max-width:56ch;
+    margin-bottom:16px;
+  }
+  .founder-text strong{ color:var(--text-dark); font-weight:600; }
+  .founder-note{
+    margin-top:20px;
+    padding-top:20px;
+    border-top:1px solid var(--line-light);
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    max-width:56ch;
+    line-height:1.7;
+  }
+
+  /* --- CTA final --- */
+  .final-cta{
+    text-align:left;
+    padding:110px 0 90px;
+  }
+  .final-cta h2{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:clamp(34px, 6vw, 64px);
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    max-width:16ch;
+  }
+  .final-cta p{
+    margin-top:22px;
+    font-size:18px;
+    color:var(--text-light-dim);
+    max-width:42ch;
+  }
+  .final-cta .hero-actions{ margin-top:40px; }
+
+  /* --- Footer --- */
+  footer{
+    padding:36px 0;
+    border-top:1px solid var(--line-dark);
+  }
+  footer .wrap{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:16px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-light-dim);
+  }
+
+  /* --- Sticky WhatsApp (mobile) --- */
+  .sticky-wa{
+    position:fixed;
+    bottom:18px;
+    right:18px;
+    z-index:90;
+    background:var(--gold);
+    color:#171208;
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
+    transition:transform 0.15s ease;
+  }
+  .sticky-wa:active{ transform:scale(0.94); }
+  .sticky-wa svg{ width:26px; height:26px; }
+  @media (min-width:900px){
+    .sticky-wa{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">CAVA<span>+</span></div>
+    <a class="header-cta" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CAVA%2B%20e%20quero%20falar%20sobre%20minha%20obra." target="_blank" rel="noopener">Falar com a CAVA+</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero on-dark">
+  <div class="grid-bg"></div>
+  <div class="reg-mark tl"></div>
+  <div class="reg-mark tr"></div>
+  <div class="reg-mark bl"></div>
+  <div class="reg-mark br"></div>
+  <div class="wrap">
+    <div class="hero-eyebrow">
+      <span class="dash"></span>
+      <span class="tag">CAVA+ — SOLUÇÕES EM ENGENHARIA</span>
+    </div>
+    <h1>Sua obra.<br><em>Nosso problema.</em></h1>
+    <p class="hero-support">Você explica o que precisa. A gente encontra o caminho — do projeto à execução, sem enrolação.</p>
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CAVA%2B%20e%20quero%20falar%20sobre%20minha%20obra." target="_blank" rel="noopener">
+        Falar com a CAVA+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8l4 4-4 4M21 12H3"/></svg>
+      </a>
+    </div>
+    <div class="hero-note">
+      <span>PROJETO · OBRA · GESTÃO · CONSULTORIA</span>
+    </div>
+  </div>
+</section>
+
+<!-- EM QUAL MOMENTO -->
+<section class="section-pad on-paper moments" id="momento">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">01 — IDENTIFICAÇÃO</span>
+      <h2>Em qual momento você está?</h2>
+    </div>
+
+    <a class="moment-row" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Quero%20reformar%20e%20vim%20pelo%20site%20da%20CAVA%2B." target="_blank" rel="noopener">
+      <div class="moment-left">
+        <span class="moment-code">A</span>
+        <span class="moment-title">Quero reformar</span>
+      </div>
+      <span class="moment-arrow">→</span>
+    </a>
+    <a class="moment-row" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Preciso%20de%20um%20projeto%20e%20vim%20pelo%20site%20da%20CAVA%2B." target="_blank" rel="noopener">
+      <div class="moment-left">
+        <span class="moment-code">B</span>
+        <span class="moment-title">Preciso de um projeto</span>
+      </div>
+      <span class="moment-arrow">→</span>
+    </a>
+    <a class="moment-row" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Minha%20obra%20precisa%20de%20acompanhamento%20t%C3%A9cnico%2C%20vim%20pelo%20site%20da%20CAVA%2B." target="_blank" rel="noopener">
+      <div class="moment-left">
+        <span class="moment-code">C</span>
+        <span class="moment-title">Minha obra precisa de acompanhamento</span>
+      </div>
+      <span class="moment-arrow">→</span>
+    </a>
+    <a class="moment-row" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Quero%20saber%20quanto%20vai%20custar%20minha%20obra%2C%20vim%20pelo%20site%20da%20CAVA%2B." target="_blank" rel="noopener">
+      <div class="moment-left">
+        <span class="moment-code">D</span>
+        <span class="moment-title">Preciso saber quanto vai custar</span>
+      </div>
+      <span class="moment-arrow">→</span>
+    </a>
+    <a class="moment-row" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20N%C3%A3o%20sei%20nem%20por%20onde%20come%C3%A7ar%20minha%20obra%2C%20vim%20pelo%20site%20da%20CAVA%2B." target="_blank" rel="noopener">
+      <div class="moment-left">
+        <span class="moment-code">E</span>
+        <span class="moment-title">Não sei nem por onde começar</span>
+      </div>
+      <span class="moment-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- SOLUÇÕES -->
+<section class="section-pad on-graphite">
+  <div class="grid-bg"></div>
+  <div class="wrap" style="position:relative;">
+    <div class="section-head">
+      <span class="tag">02 — SOLUÇÕES</span>
+      <h2>Da ideia à obra,<br>a gente resolve.</h2>
+    </div>
+
+    <div class="solutions-grid">
+      <div>
+        <div class="sol-group-title">PROJETOS</div>
+        <ul class="sol-group">
+          <li>Projetos arquitetônicos</li>
+          <li>Projetos complementares</li>
+          <li>Compatibilização</li>
+          <li>BIM</li>
+          <li>Regularização</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sol-group-title">OBRAS</div>
+        <ul class="sol-group">
+          <li>Reformas</li>
+          <li>Execução através de parceiros</li>
+          <li>Acompanhamento técnico</li>
+          <li>Supervisão</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sol-group-title">GESTÃO</div>
+        <ul class="sol-group">
+          <li>Planejamento</li>
+          <li>Orçamento</li>
+          <li>Cronograma</li>
+          <li>Gestão de equipes</li>
+          <li>Controle de custos</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sol-group-title">CONSULTORIA</div>
+        <ul class="sol-group">
+          <li>Consultoria técnica</li>
+          <li>Vistorias</li>
+          <li>Laudos e relatórios</li>
+          <li>Análise de viabilidade</li>
+          <li>Soluções para problemas de obra</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEM ENGENHEIRÊS -->
+<section class="section-pad on-paper-2">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:8px;">
+      <span class="tag">03 — COMO A GENTE FALA</span>
+      <h2>Sem engenheirês.</h2>
+    </div>
+    <p class="engineer-lead" style="margin-top:24px;">Você explica o problema. A gente resolve.</p>
+    <p style="margin-top:24px; max-width:52ch; font-size:17px; color:var(--text-dim); line-height:1.7;">
+      Você não precisa entender de engenharia para construir ou reformar. A gente traduz a parte técnica, organiza as informações e mostra o caminho mais seguro e viável para a sua obra.
+    </p>
+
+    <div class="translate-block">
+      <div class="translate-row">
+        <div class="translate-tech">"Compatibilização de projetos"</div>
+        <div class="translate-arrow">→</div>
+        <div class="translate-plain">Garantir que elétrica, hidráulica e estrutura não se cruzem errado.</div>
+      </div>
+      <div class="translate-row">
+        <div class="translate-tech">"Análise de viabilidade"</div>
+        <div class="translate-arrow">→</div>
+        <div class="translate-plain">Descobrir se o que você quer fazer é possível antes de gastar com isso.</div>
+      </div>
+      <div class="translate-row">
+        <div class="translate-tech">"Cronograma físico-financeiro"</div>
+        <div class="translate-arrow">→</div>
+        <div class="translate-plain">Saber quando cada etapa acontece e quanto ela custa.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUE A CAVA+ -->
+<section class="section-pad on-dark">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">04 — POR QUE A CAVA+</span>
+      <h2>O que muda quando<br>alguém organiza por você.</h2>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-name">Clareza</div>
+        <p class="pillar-text">Você sabe o que está sendo feito, por quê e quanto vai custar.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Planejamento</div>
+        <p class="pillar-text">Antes de executar, a gente organiza.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Técnica</div>
+        <p class="pillar-text">Experiência de obra aplicada à solução de problemas reais.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Proximidade</div>
+        <p class="pillar-text">Você fala com quem está acompanhando o problema.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR TRÁS DA CAVA+ -->
+<section class="section-pad on-paper">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">05 — QUEM RESOLVE</span>
+      <h2>Por trás da CAVA+</h2>
+    </div>
+
+    <div class="founder">
+      <div class="founder-mark">
+        <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="260" fill="#0E0E10"/>
+          <line x1="0" y1="86" x2="260" y2="86" stroke="rgba(244,242,236,0.14)" stroke-width="1"/>
+          <line x1="0" y1="174" x2="260" y2="174" stroke="rgba(244,242,236,0.14)" stroke-width="1"/>
+          <line x1="86" y1="0" x2="86" y2="260" stroke="rgba(244,242,236,0.14)" stroke-width="1"/>
+          <line x1="174" y1="0" x2="174" y2="260" stroke="rgba(244,242,236,0.14)" stroke-width="1"/>
+          <circle cx="130" cy="105" r="42" fill="none" stroke="#C6A15B" stroke-width="2"/>
+          <path d="M60 220 C60 165 95 150 130 150 C165 150 200 165 200 220" fill="none" stroke="#C6A15B" stroke-width="2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="founder-name">Lucas Cavalcante</div>
+        <div class="founder-role">FUNDADOR — CAVA+</div>
+        <div class="founder-text">
+          <p>Por trás da CAVA+ existe experiência de verdade em construção civil, gestão e acompanhamento de obras. Anos lidando com projetos, cronogramas apertados e problemas reais de canteiro — o tipo de coisa que só se aprende resolvendo.</p>
+          <p>A CAVA+ nasce agora para reunir essa experiência em uma nova empresa, pensada para quem precisa de clareza técnica sem precisar virar engenheiro para entender o próprio projeto.</p>
+        </div>
+        <div class="founder-note">
+          NOTA — a experiência profissional descrita foi construída antes da fundação da CAVA+. As obras mencionadas fazem parte da trajetória do fundador, não do portfólio da empresa.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="on-dark final-cta">
+  <div class="grid-bg"></div>
+  <div class="reg-mark bl"></div>
+  <div class="reg-mark br"></div>
+  <div class="wrap">
+    <h2>Vamos tirar isso do papel?</h2>
+    <p>Conte o que você precisa. A gente conversa e encontra o melhor caminho.</p>
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CAVA%2B%20e%20quero%20tirar%20minha%20obra%20do%20papel." target="_blank" rel="noopener">
+        Falar com a CAVA+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8l4 4-4 4M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="on-dark">
+  <div class="wrap">
+    <span>CAVA+ SOLUÇÕES EM ENGENHARIA</span>
+    <span>WHATSAPP (85) 9.8135-1088</span>
+    <span>CEARÁ, BRASIL</span>
+  </div>
+</footer>
+
+<a class="sticky-wa" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CAVA%2B%20e%20quero%20falar%20sobre%20minha%20obra." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h0a7.94 7.94 0 0 0 5.55-13.58zm-5.55 12.2h0a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.66.67-2.44-.16-.25a6.6 6.6 0 0 1 10.24-8.2 6.55 6.55 0 0 1 1.94 4.66 6.6 6.6 0 0 1-6.59 6.63zm3.6-4.93c-.2-.1-1.17-.58-1.35-.64s-.31-.1-.44.1-.51.64-.62.77-.23.15-.42.05a5.4 5.4 0 0 1-1.6-.99 6 6 0 0 1-1.1-1.37c-.12-.2 0-.3.09-.4s.2-.23.3-.35a1.4 1.4 0 0 0 .2-.34.37.37 0 0 0 0-.35c-.05-.1-.44-1.06-.6-1.45s-.32-.33-.44-.34h-.38a.72.72 0 0 0-.53.25 2.2 2.2 0 0 0-.68 1.63c0 .96.7 1.9.8 2.03s1.37 2.1 3.32 2.94a11 11 0 0 0 1.11.41 2.68 2.68 0 0 0 1.23.08 2 2 0 0 0 1.32-.93 1.65 1.65 0 0 0 .11-.93c-.05-.09-.18-.14-.38-.24z"/></svg>
+</a>
+
+</body>
+</html>
