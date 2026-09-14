@@ -113,6 +113,10 @@
     color:var(--gold);
   }
 
+  /* --- Gold text highlight ("marca-texto") --- */
+  .hl{ color:var(--gold); }
+  .on-paper .hl, .on-paper-2 .hl{ color:var(--gold-deep); }
+
   /* --- Buttons --- */
   .btn{
     display:inline-flex;
@@ -379,114 +383,171 @@
   }
 
   /* --- Por que a CAVA+ (pillars) --- */
+  .why-layout{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:56px;
+  }
+  @media (min-width:900px){
+    .why-layout{ grid-template-columns:0.85fr 1.15fr; gap:64px; }
+  }
+  .why-lead-quote{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(24px, 3vw, 32px);
+    line-height:1.3;
+    max-width:18ch;
+  }
+  .why-lead-quote .gold-line{
+    display:inline-block;
+    width:44px; height:3px;
+    background:var(--gold);
+    margin-bottom:24px;
+  }
+  .why-stat{
+    margin-top:40px;
+    display:flex;
+    gap:14px;
+    align-items:baseline;
+  }
+  .why-stat-num{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:52px;
+    color:var(--gold);
+    line-height:1;
+  }
+  .why-stat-label{
+    font-size:14px;
+    color:var(--text-light-dim);
+    max-width:20ch;
+    line-height:1.5;
+  }
   .pillars{
     display:grid;
     grid-template-columns:1fr;
-    gap:0;
+    gap:1px;
+    background:var(--line-dark);
+    border:1px solid var(--line-dark);
   }
-  @media (min-width:800px){
-    .pillars{ grid-template-columns:repeat(4,1fr); }
+  @media (min-width:640px){
+    .pillars{ grid-template-columns:1fr 1fr; }
   }
   .pillar{
-    padding:32px 0;
-    border-top:1px solid var(--line-light);
+    position:relative;
+    padding:36px 30px 30px;
+    background:var(--graphite);
+    transition:background 0.25s ease;
+    border-top:2px solid var(--gold-deep);
   }
-  @media (min-width:800px){
-    .pillar{
-      border-top:none;
-      border-left:1px solid var(--line-light);
-      padding:0 28px;
-    }
-    .pillar:first-child{ border-left:none; padding-left:0; }
+  .pillar:hover{ background:var(--graphite-2); border-top-color:var(--gold); }
+  .pillar-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .pillar-icon{
+    width:32px; height:32px;
+    color:var(--gold);
+  }
+  .pillar-icon svg{ width:100%; height:100%; }
+  .pillar-num{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-light-dim);
   }
   .pillar-name{
     font-family:var(--display);
     font-weight:800;
-    font-size:19px;
-    margin-bottom:14px;
+    font-size:20px;
+    margin-bottom:12px;
     letter-spacing:-0.01em;
   }
   .pillar-text{
     font-size:15px;
-    color:var(--text-dim);
-    line-height:1.6;
+    color:var(--text-light-dim);
+    line-height:1.65;
+    max-width:32ch;
   }
 
-  /* --- Por trás da CAVA+ --- */
-  .founder{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:48px;
-    align-items:start;
-  }
-  @media (min-width:840px){
-    .founder{ grid-template-columns:280px 1fr; }
-  }
-  .founder-mark{
-    width:100%;
-    aspect-ratio:1/1;
-    max-width:260px;
-    position:relative;
-    background:var(--ink);
-    overflow:hidden;
-  }
-  .founder-mark svg{ width:100%; height:100%; }
-  .founder-name{
-    font-family:var(--display);
-    font-weight:800;
-    font-size:22px;
-    margin-bottom:6px;
-  }
-  .founder-role{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--gold-deep);
-    margin-bottom:22px;
-  }
-  .founder-text p{
-    font-size:16px;
-    line-height:1.75;
-    color:var(--text-dim);
-    max-width:56ch;
-    margin-bottom:16px;
-  }
-  .founder-text strong{ color:var(--text-dark); font-weight:600; }
-  .founder-note{
-    margin-top:20px;
-    padding-top:20px;
-    border-top:1px solid var(--line-light);
-    font-family:var(--mono);
-    font-size:12.5px;
-    color:var(--text-dim);
-    max-width:56ch;
-    line-height:1.7;
-  }
-
-  /* --- CTA final --- */
+  /* --- CTA final: o grande final --- */
   .final-cta{
-    text-align:left;
-    padding:110px 0 90px;
+    text-align:center;
+    padding:160px 0 140px;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 8%, rgba(198,161,91,0.16), transparent 70%),
+      #08080A;
+  }
+  .final-cta .wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    z-index:1;
+  }
+  .final-plus{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    font-family:var(--display);
+    font-weight:900;
+    font-size:min(70vw, 820px);
+    line-height:1;
+    color:var(--gold);
+    opacity:0.05;
+    pointer-events:none;
+    user-select:none;
+    z-index:0;
+  }
+  .final-cta .gold-line{
+    display:block;
+    width:44px; height:3px;
+    background:var(--gold);
+    margin:0 auto 24px;
+  }
+  .final-cta .tag{
+    display:block;
+    margin-bottom:22px;
   }
   .final-cta h2{
     font-family:var(--display);
     font-weight:900;
-    font-size:clamp(34px, 6vw, 64px);
-    line-height:1.05;
+    font-size:clamp(42px, 8.5vw, 92px);
+    line-height:1.02;
     letter-spacing:-0.02em;
     max-width:16ch;
   }
-  .final-cta p{
-    margin-top:22px;
-    font-size:18px;
+  .final-cta .final-sub{
+    margin-top:28px;
+    font-size:19px;
     color:var(--text-light-dim);
-    max-width:42ch;
+    max-width:38ch;
+    line-height:1.6;
   }
-  .final-cta .hero-actions{ margin-top:40px; }
+  .final-cta .final-sub strong{
+    color:var(--text-light);
+    font-weight:600;
+  }
+  .final-cta .hero-actions{
+    margin-top:52px;
+    justify-content:center;
+  }
+  .final-cta .btn-gold{
+    padding:20px 44px;
+    font-size:18px;
+    box-shadow:0 0 50px rgba(198,161,91,0.28);
+  }
+  .final-cta .btn-gold:hover{
+    box-shadow:0 0 60px rgba(198,161,91,0.4);
+  }
 
   /* --- Footer --- */
   footer{
     padding:36px 0;
     border-top:1px solid var(--line-dark);
+    background:#08080A;
   }
   footer .wrap{
     display:flex;
@@ -496,29 +557,6 @@
     font-family:var(--mono);
     font-size:12px;
     color:var(--text-light-dim);
-  }
-
-  /* --- Sticky WhatsApp (mobile) --- */
-  .sticky-wa{
-    position:fixed;
-    bottom:18px;
-    right:18px;
-    z-index:90;
-    background:var(--gold);
-    color:#171208;
-    width:56px;
-    height:56px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 10px 30px rgba(0,0,0,0.35);
-    transition:transform 0.15s ease;
-  }
-  .sticky-wa:active{ transform:scale(0.94); }
-  .sticky-wa svg{ width:26px; height:26px; }
-  @media (min-width:900px){
-    .sticky-wa{ display:none; }
   }
 </style>
 </head>
@@ -562,7 +600,7 @@
   <div class="wrap">
     <div class="section-head">
       <span class="tag">01 — IDENTIFICAÇÃO</span>
-      <h2>Em qual momento você está?</h2>
+      <h2>Em qual <span class="hl">momento</span> você está?</h2>
     </div>
 
     <a class="moment-row" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Quero%20reformar%20e%20vim%20pelo%20site%20da%20CAVA%2B." target="_blank" rel="noopener">
@@ -609,7 +647,7 @@
   <div class="wrap" style="position:relative;">
     <div class="section-head">
       <span class="tag">02 — SOLUÇÕES</span>
-      <h2>Da ideia à obra,<br>a gente resolve.</h2>
+      <h2>Da ideia à obra,<br>a gente <span class="hl">resolve</span>.</h2>
     </div>
 
     <div class="solutions-grid">
@@ -661,9 +699,9 @@
   <div class="wrap">
     <div class="section-head" style="margin-bottom:8px;">
       <span class="tag">03 — COMO A GENTE FALA</span>
-      <h2>Sem engenheirês.</h2>
+      <h2>Sem <span class="hl">engenheirês</span>.</h2>
     </div>
-    <p class="engineer-lead" style="margin-top:24px;">Você explica o problema. A gente resolve.</p>
+    <p class="engineer-lead" style="margin-top:24px;">Você explica o problema. A gente <span class="hl">resolve</span>.</p>
     <p style="margin-top:24px; max-width:52ch; font-size:17px; color:var(--text-dim); line-height:1.7;">
       Você não precisa entender de engenharia para construir ou reformar. A gente traduz a parte técnica, organiza as informações e mostra o caminho mais seguro e viável para a sua obra.
     </p>
@@ -690,76 +728,84 @@
 
 <!-- POR QUE A CAVA+ -->
 <section class="section-pad on-dark">
-  <div class="wrap">
+  <div class="grid-bg"></div>
+  <div class="wrap" style="position:relative;">
     <div class="section-head">
       <span class="tag">04 — POR QUE A CAVA+</span>
-      <h2>O que muda quando<br>alguém organiza por você.</h2>
+      <h2>O que muda quando<br>alguém <span class="hl">organiza</span> por você.</h2>
     </div>
 
-    <div class="pillars">
-      <div class="pillar">
-        <div class="pillar-name">Clareza</div>
-        <p class="pillar-text">Você sabe o que está sendo feito, por quê e quanto vai custar.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-name">Planejamento</div>
-        <p class="pillar-text">Antes de executar, a gente organiza.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-name">Técnica</div>
-        <p class="pillar-text">Experiência de obra aplicada à solução de problemas reais.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-name">Proximidade</div>
-        <p class="pillar-text">Você fala com quem está acompanhando o problema.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- POR TRÁS DA CAVA+ -->
-<section class="section-pad on-paper">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="tag">05 — QUEM RESOLVE</span>
-      <h2>Por trás da CAVA+</h2>
-    </div>
-
-    <div class="founder">
-      <div class="founder-mark">
-        <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
-          <rect width="260" height="260" fill="#0E0E10"/>
-          <line x1="0" y1="86" x2="260" y2="86" stroke="rgba(244,242,236,0.14)" stroke-width="1"/>
-          <line x1="0" y1="174" x2="260" y2="174" stroke="rgba(244,242,236,0.14)" stroke-width="1"/>
-          <line x1="86" y1="0" x2="86" y2="260" stroke="rgba(244,242,236,0.14)" stroke-width="1"/>
-          <line x1="174" y1="0" x2="174" y2="260" stroke="rgba(244,242,236,0.14)" stroke-width="1"/>
-          <circle cx="130" cy="105" r="42" fill="none" stroke="#C6A15B" stroke-width="2"/>
-          <path d="M60 220 C60 165 95 150 130 150 C165 150 200 165 200 220" fill="none" stroke="#C6A15B" stroke-width="2"/>
-        </svg>
-      </div>
+    <div class="why-layout">
       <div>
-        <div class="founder-name">Lucas Cavalcante</div>
-        <div class="founder-role">FUNDADOR — CAVA+</div>
-        <div class="founder-text">
-          <p>Por trás da CAVA+ existe experiência de verdade em construção civil, gestão e acompanhamento de obras. Anos lidando com projetos, cronogramas apertados e problemas reais de canteiro — o tipo de coisa que só se aprende resolvendo.</p>
-          <p>A CAVA+ nasce agora para reunir essa experiência em uma nova empresa, pensada para quem precisa de clareza técnica sem precisar virar engenheiro para entender o próprio projeto.</p>
+        <p class="why-lead-quote">
+          <span class="gold-line"></span>
+          Obra sem organização vira imprevisto. Organização é o que separa reforma tranquila de dor de cabeça.
+        </p>
+        <div class="why-stat">
+          <span class="why-stat-num">1</span>
+          <span class="why-stat-label">interlocutor do início ao fim — sem repassar seu problema de setor em setor.</span>
         </div>
-        <div class="founder-note">
-          NOTA — a experiência profissional descrita foi construída antes da fundação da CAVA+. As obras mencionadas fazem parte da trajetória do fundador, não do portfólio da empresa.
+      </div>
+
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-top">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 20V9"/></svg>
+            </div>
+            <span class="pillar-num">01</span>
+          </div>
+          <div class="pillar-name">Clareza</div>
+          <p class="pillar-text">Você sabe o que está sendo feito, por quê e quanto vai custar.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-top">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h10M4 18h13"/><circle cx="19" cy="6" r="1.4" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <span class="pillar-num">02</span>
+          </div>
+          <div class="pillar-name">Planejamento</div>
+          <p class="pillar-text">Antes de executar, a gente organiza o que precisa acontecer e em que ordem.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-top">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21l6-6M13.5 3.5a3 3 0 0 1 4 4l-8 8-5 1 1-5 8-8z"/></svg>
+            </div>
+            <span class="pillar-num">03</span>
+          </div>
+          <div class="pillar-name">Técnica</div>
+          <p class="pillar-text">Experiência de obra de verdade, aplicada à solução de problemas reais.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-top">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18c0-3 3-5 6-5s6 2 6 5M13 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM17 13c2 .3 3.5 1.8 3.5 4"/></svg>
+            </div>
+            <span class="pillar-num">04</span>
+          </div>
+          <div class="pillar-name">Proximidade</div>
+          <p class="pillar-text">Você fala direto com quem está acompanhando o seu problema.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA FINAL -->
+<!-- CTA FINAL — grande final da experiência -->
 <section class="on-dark final-cta">
+  <div class="final-plus" aria-hidden="true">+</div>
   <div class="grid-bg"></div>
+  <div class="reg-mark tl"></div>
+  <div class="reg-mark tr"></div>
   <div class="reg-mark bl"></div>
   <div class="reg-mark br"></div>
   <div class="wrap">
-    <h2>Vamos tirar isso do papel?</h2>
-    <p>Conte o que você precisa. A gente conversa e encontra o melhor caminho.</p>
+    <span class="gold-line"></span>
+    <span class="tag">CAVA+ — SOLUÇÕES EM ENGENHARIA</span>
+    <h2>Vamos tirar <span class="hl">isso do papel</span>?</h2>
+    <p class="final-sub">Você explica o que precisa. <strong>A CAVA+ encontra o caminho.</strong></p>
     <div class="hero-actions">
       <a class="btn btn-gold" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CAVA%2B%20e%20quero%20tirar%20minha%20obra%20do%20papel." target="_blank" rel="noopener">
         Falar com a CAVA+
@@ -769,17 +815,12 @@
   </div>
 </section>
 
-<footer class="on-dark">
+<footer>
   <div class="wrap">
     <span>CAVA+ SOLUÇÕES EM ENGENHARIA</span>
-    <span>WHATSAPP (85) 9.8135-1088</span>
     <span>CEARÁ, BRASIL</span>
   </div>
 </footer>
-
-<a class="sticky-wa" href="https://wa.me/5585981351088?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CAVA%2B%20e%20quero%20falar%20sobre%20minha%20obra." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h0a7.94 7.94 0 0 0 5.55-13.58zm-5.55 12.2h0a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.66.67-2.44-.16-.25a6.6 6.6 0 0 1 10.24-8.2 6.55 6.55 0 0 1 1.94 4.66 6.6 6.6 0 0 1-6.59 6.63zm3.6-4.93c-.2-.1-1.17-.58-1.35-.64s-.31-.1-.44.1-.51.64-.62.77-.23.15-.42.05a5.4 5.4 0 0 1-1.6-.99 6 6 0 0 1-1.1-1.37c-.12-.2 0-.3.09-.4s.2-.23.3-.35a1.4 1.4 0 0 0 .2-.34.37.37 0 0 0 0-.35c-.05-.1-.44-1.06-.6-1.45s-.32-.33-.44-.34h-.38a.72.72 0 0 0-.53.25 2.2 2.2 0 0 0-.68 1.63c0 .96.7 1.9.8 2.03s1.37 2.1 3.32 2.94a11 11 0 0 0 1.11.41 2.68 2.68 0 0 0 1.23.08 2 2 0 0 0 1.32-.93 1.65 1.65 0 0 0 .11-.93c-.05-.09-.18-.14-.38-.24z"/></svg>
-</a>
 
 </body>
 </html>
