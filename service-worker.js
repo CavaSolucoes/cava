@@ -2,15 +2,15 @@
    - Guarda só o "casco" do app (HTML, manifest, ícones e a biblioteca supabase-js do CDN).
    - NUNCA intercepta chamadas ao Supabase (dados, auth, realtime): elas vão sempre direto pra rede.
    - Para publicar uma nova versão, basta mudar CACHE_VERSION. */
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = 'financas-casal-' + CACHE_VERSION;
 const SHELL = [
   './',
   './index.html',
   './manifest.json',
-  './pwa/icon-192.png',
-  './pwa/icon-512.png',
-  './pwa/icon-maskable-512.png'
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png'
 ];
 
 self.addEventListener('install', (event) => {
